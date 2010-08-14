@@ -2,6 +2,10 @@
 
 ... is a persistence layer written in ruby for CouchDB.
 
+This gem, *davber_couch_potato*, is a clone of the *couch_potato*, adding the capability to set the names of the design document and the *type* field, which is hard-coded to "ruby-class" in the original gem. This to enable interaction between other systems than the Couch Potato app with the CouchDB database. Hard-coded names are evil. Always.
+
+This variant of the gem is created by David Bergman.
+
 ### Mission
 
 The goal of Couch Potato is to create a minimal framework in order to store and retrieve Ruby objects to/from CouchDB and create and query views.
@@ -29,7 +33,7 @@ Lastly Couch Potato aims to provide a seamless integration with Ruby on Rails, e
 
 Couch Potato is hosted as a gem which you can install like this:
 
-    (sudo) gem install couch_potato
+    (sudo) gem install davber_couch_potato
 
 #### Using with your ruby application:
 
@@ -73,7 +77,7 @@ Create a config/couchdb.yml:
 
 Add to your _config/environment.rb_:
 
-    config.gem 'couch_potato', :source => 'http://gemcutter.org'
+    config.gem 'davber_couch_potato', :source => 'http://gemcutter.org'
     config.frameworks -= [:active_record] # if you switch completely
     
 #### Rails 3.x
