@@ -82,12 +82,12 @@ end
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |s|
-    s.name = "couch_potato"
+    s.name = "davber_couch_potato"
     s.summary = %Q{Ruby persistence layer for CouchDB}
-    s.email = "alex@upstream-berlin.com"
-    s.homepage = "http://github.com/langalex/couch_potato"
+    s.email = "davber@gmail.com"
+    s.homepage = "http://github.com/davber/couch_potato"
     s.description = "Ruby persistence layer for CouchDB"
-    s.authors = ["Alexander Lang"]
+    s.authors = ["David Bergman"]
     s.files = FileList["[A-Z]*.*", "{lib,spec,rails}/**/*", "init.rb"]
     s.add_dependency 'json'
     s.add_dependency 'couchrest', '>=1.0.1'
