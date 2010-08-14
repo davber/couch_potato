@@ -5,10 +5,35 @@ require 'json/add/rails'
 
 require 'ostruct'
 
-JSON.create_id = 'ruby_class'
-
 unless defined?(CouchPotato)
   module CouchPotato
+    DEFAULT_TYPE_FIELD = 'ruby_class'
+    DEFAULT_DESIGN_NAME_FUN = lambda { |clazz| clazz.to_s.downcase }
+
+    # The name of the type field of CouchDB documents
+    @@type_field = DEFAULT_TYPE_FIELD
+    # The function mapping classes to the corresponding CouchDB design document
+    @@design_name_fun = DEFAULT_DESIGN_NAME_FUN
+
+    # Get the type field name to use.
+    # NOTE: this is universal, so will transcend individual databases
+    def self.type_field
+      @@type_field
+    end
+
+    def self.type_field= type_field
+      @@type_field = type_field
+    end
+
+    # Get the lambda to use for conversion from a class to the design document name
+    def self.design_name_fun
+      @@design_name_fun
+    end
+
+    def self.design_name_fun= fun
+      @@design_name_fun = fun
+    end
+
     Config = Struct.new(:database_name, :validation_framework).new
     Config.validation_framework = :validatable # default to the validatable gem for validations
 
@@ -34,6 +59,8 @@ unless defined?(CouchPotato)
     end
   end
 end
+
+JSON.create_id = CouchPotato.type_field
 
 $LOAD_PATH << File.dirname(__FILE__)
 
