@@ -8,12 +8,17 @@ require 'ostruct'
 unless defined?(CouchPotato)
   module CouchPotato
     DEFAULT_TYPE_FIELD = 'ruby_class'
-    DEFAULT_DESIGN_NAME_FUN = lambda { |clazz| clazz.to_s.downcase }
 
     # The name of the type field of CouchDB documents
     @@type_field = DEFAULT_TYPE_FIELD
-    # The function mapping classes to the corresponding CouchDB design document
-    @@design_name_fun = DEFAULT_DESIGN_NAME_FUN
+    # The function mapping classes to the corresponding CouchDB design document.
+    @@design_name_fun = lambda do |klass|
+      klass_name = klass.to_s
+      klass_name.gsub!(/([A-Z]+)([A-Z][a-z])/,'\1_\2')
+      klass_name.gsub!(/([a-z\d])([A-Z])/,'\1_\2')
+      klass_name.tr!("-", "_")
+      klass_name.downcase
+    end
 
     # Get the type field name to use.
     # NOTE: this is universal, so will transcend individual databases

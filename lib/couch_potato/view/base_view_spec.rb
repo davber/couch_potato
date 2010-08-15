@@ -11,7 +11,8 @@ module CouchPotato
         
         assert_valid_view_parameters normalized_view_parameters
         @klass = klass
-        @design_document = translate_to_design_doc_name(klass.to_s)
+        # If there is a specified design name generator, we use that one
+        @design_document = CouchPotato.design_name_fun.call klass
         @view_name = view_name
         @options = options
         
@@ -60,14 +61,6 @@ module CouchPotato
       
       def valid_view_parameters
         %w(key keys startkey startkey_docid endkey endkey_docid limit stale descending skip group group_level reduce include_docs inclusive_end)
-      end
-      
-      def translate_to_design_doc_name(klass_name)
-        klass_name = klass_name.dup
-        klass_name.gsub!(/([A-Z]+)([A-Z][a-z])/,'\1_\2')
-        klass_name.gsub!(/([a-z\d])([A-Z])/,'\1_\2')
-        klass_name.tr!("-", "_")
-        klass_name.downcase
       end
     end
   end

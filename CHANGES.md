@@ -16,6 +16,10 @@
 * ruby 1.9.2 compatibility (langalex)
 * can configure validation framework in couchdb.yml, process couchdb.yml with erb (langalex)
 
+### 0.3.0 - cloned gem!
+* type field of documents now configurable, by using CouchPotato.type_field (davber)
+* the mapping from class to design document name is now configurable, by using CouchPotato.design_name_fun, which is supposed to be a Proc (davber)
+
 ### 0.3.0
 * support for lists (langalex)
 
