@@ -1,4 +1,16 @@
 module CouchPotato
+  # We can bypass creation of views completely, so we can use views
+  # that are created via other means, such as CouchApp.
+  # The default is not to bypass creation.
+  # TODO: enable this bypass for specific view in the view specification, instead of globally
+  def self.bypass_view_creation
+    @bypass_view_creation
+  end
+  
+  def self.bypass_view_creation= flag
+    @bypass_view_creation = flag
+  end
+  
   module View
     # Used to query views (and create them if they don't exist). Usually you won't have to use this class directly. Instead it is used internally by the CouchPotato::Database.view method.
     class ViewQuery
@@ -15,7 +27,7 @@ module CouchPotato
       end
 
       def query_view!(parameters = {})
-        update_view unless view_has_been_updated?
+        update_view unless CouchPotato::bypass_view_creation || view_has_been_updated?
         begin
           query_view parameters
         rescue RestClient::ResourceNotFound
@@ -27,6 +39,9 @@ module CouchPotato
       private
 
       def update_view
+        # In case we bypass creation of views, we simply return here and now
+        # TODO: pretty ugly early return
+        return if CouchPotato::bypass_view_creation
         design_doc = @database.get "_design/#{@design_document_name}" rescue nil
         original_views = design_doc && design_doc['views'].dup
         original_lists = design_doc && design_doc['lists'] && design_doc['lists'].dup
@@ -49,14 +64,17 @@ module CouchPotato
       end
       
       def view_has_been_updated?
+        # TODO: decide what to do here in case CouchPotato::bypass_view_creation is true
         updated_views[[@design_document_name, @view_name]]
       end
       
       def view_updated
+        # TODO: decide what to do here in case CouchPotato::bypass_view_creation is true
         updated_views[[@design_document_name, @view_name]] = true
       end
       
       def updated_views
+        # TODO: decide what to do here in case CouchPotato::bypass_view_creation is true
         @@updated_views ||= {}
         @@updated_views
       end
