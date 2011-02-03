@@ -39,9 +39,6 @@ module CouchPotato
       private
 
       def update_view
-        # In case we bypass creation of views, we simply return here and now
-        # TODO: pretty ugly early return
-        return if CouchPotato::bypass_view_creation
         design_doc = @database.get "_design/#{@design_document_name}" rescue nil
         original_views = design_doc && design_doc['views'].dup
         original_lists = design_doc && design_doc['lists'] && design_doc['lists'].dup
@@ -52,7 +49,9 @@ module CouchPotato
           design_doc['lists'] ||= {}
           design_doc['lists'][@list_name.to_s] = @list_function 
         end
-        @database.save_doc(design_doc) if original_views != design_doc['views'] || original_lists != design_doc['lists']
+        # We do not save the design document if view creation is bypassed
+        @database.save_doc(design_doc) unless CouchPotato::bypass_view_creation ||
+          original_views == design_doc['views'] && original_lists == design_doc['lists']
       end
       
       def view_functions
