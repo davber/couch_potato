@@ -1,5 +1,10 @@
 ## Changes
 
+### 0.4.0 - fork-specific!
+* type field of documents now configurable, by using CouchPotato.type_field (davber)
+* the mapping from class to design document name is now configurable, by using `CouchPotato.design_name_fun`, which is supposed to be a Proc (davber)
+* one can disable automatic view creation, by setting `CouchPotato::bypass_view_creation` to `true`; this enables one to use views created by other means, such as via CouchApp (davber)
+
 ### 0.4.0
 * ruby 1.9.2 compatibility (langalex)
 * couch potato objects now behave correctly when used as keys in Hashes (langalex)
@@ -15,10 +20,6 @@
 * do not use Rails.env in initializer as it will free Rails.env for all times and in Rails 2.3.x apps it will be called too early thus always beeing development (jweiss)
 * ruby 1.9.2 compatibility (langalex)
 * can configure validation framework in couchdb.yml, process couchdb.yml with erb (langalex)
-
-### 0.3.0 - cloned gem!
-* type field of documents now configurable, by using CouchPotato.type_field (davber)
-* the mapping from class to design document name is now configurable, by using CouchPotato.design_name_fun, which is supposed to be a Proc (davber)
 
 ### 0.3.0
 * support for lists (langalex)
